@@ -1,6 +1,7 @@
 name: Publicar GUACAS na hospedagem
 
 # Após atualizar um secret, execute novamente este workflow para aplicar a mudança.
+# Redefinição do código de implantação solicitada pelo administrador.
 
 on:
   workflow_dispatch:
