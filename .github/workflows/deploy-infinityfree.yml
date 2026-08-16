@@ -95,15 +95,11 @@ jobs:
           host = host.removeprefix('ftp://').removeprefix('ftps://').rstrip('/')
           username = quote(os.environ['FTP_USERNAME'], safe='')
           password = quote(os.environ['FTP_PASSWORD'], safe='')
-          remote_dir = os.environ['FTP_REMOTE_DIR'].strip()
-          if not remote_dir.startswith('/'):
-              remote_dir = '/' + remote_dir
-          remote_dir = quote(remote_dir.rstrip('/') + '/', safe='/')
-          print(f'ftp://{username}:{password}@{host}{remote_dir}')
+          print(f'ftp://{username}:{password}@{host}/')
           PY
           )"
 
-          lftp "$FTP_URL" <<'LFTP'
+          lftp "$FTP_URL" <<LFTP
           set cmd:fail-exit yes
           set net:max-retries 3
           set net:timeout 25
@@ -112,6 +108,8 @@ jobs:
           set ftp:ssl-allow true
           set ftp:ssl-force false
           set ssl:verify-certificate true
+          mkdir -p "$FTP_REMOTE_DIR"
+          cd "$FTP_REMOTE_DIR"
           mirror -R --verbose --parallel=1 --ignore-time --overwrite --no-perms \
             --exclude-glob .git/ \
             --exclude-glob .github/ \
