@@ -1,5 +1,7 @@
 name: Publicar GUACAS na hospedagem
 
+# Após atualizar um secret, execute novamente este workflow para aplicar a mudança.
+
 on:
   workflow_dispatch:
   push:
