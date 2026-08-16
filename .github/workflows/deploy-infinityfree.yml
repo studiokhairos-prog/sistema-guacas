@@ -99,18 +99,19 @@ jobs:
           PY
           )"
 
-          lftp "$FTP_URL" <<LFTP
-          set cmd:fail-exit yes
-          set net:max-retries 3
-          set net:timeout 25
-          set net:reconnect-interval-base 5
-          set ftp:passive-mode true
-          set ftp:ssl-allow true
-          set ftp:ssl-force false
-          set ssl:verify-certificate true
-          mkdir -p "$FTP_REMOTE_DIR"
-          cd "$FTP_REMOTE_DIR"
-          mirror -R --verbose --parallel=1 --ignore-time --overwrite --no-perms \
+          upload_once() {
+            lftp "$FTP_URL" <<LFTP
+            set cmd:fail-exit yes
+            set net:max-retries 3
+            set net:timeout 25
+            set net:reconnect-interval-base 5
+            set ftp:passive-mode true
+            set ftp:ssl-allow true
+            set ftp:ssl-force false
+            set ssl:verify-certificate true
+            mkdir -p "$FTP_REMOTE_DIR"
+            cd "$FTP_REMOTE_DIR"
+            mirror -R --verbose --parallel=1 --ignore-time --overwrite --no-perms \
             --exclude-glob .git/ \
             --exclude-glob .github/ \
             --exclude-glob .gitignore \
@@ -140,9 +141,26 @@ jobs:
             --exclude-glob 'data/user_signatures/**' \
             --exclude-glob 'data/public_tunnel_url.txt' \
             --exclude-glob 'data/TUNEL_*' \
-            ./ .
-          bye
+              ./ .
+            bye
           LFTP
+          }
+
+          upload_ok=0
+          for attempt in 1 2 3; do
+            echo "Tentativa de publicação FTP ${attempt}/3"
+            if upload_once; then
+              upload_ok=1
+              break
+            fi
+            echo 'O servidor recusou algum arquivo temporariamente; nova tentativa em 12 segundos.'
+            sleep 12
+          done
+
+          if [ "$upload_ok" -ne 1 ]; then
+            echo 'ERRO: a publicação FTP não foi concluída após 3 tentativas.'
+            exit 1
+          fi
 
       - name: Publicação concluída
         run: echo 'GUACAS publicada. Abra o portal HTTPS e conclua o primeiro acesso com o código de implantação.'
