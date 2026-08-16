@@ -1,0 +1,9 @@
+{
+  "name": "GUACAS - Operações de Bombeiros Civis",
+  "short_name": "GUACAS",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f2f3f5",
+  "theme_color": "#8b1e24",
+  "icons": []
+}

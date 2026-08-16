@@ -1,0 +1,46 @@
+# Bancos e arquivos transitórios do SQLite
+data/*.sqlite
+data/*.sqlite3
+data/*.db
+data/*.db3
+data/*.sqlite-*
+data/*.sqlite3-*
+data/*.db-*
+data/*.db3-*
+data/restore_pending.*
+
+# Chaves e credenciais geradas na instalação
+data/app_secret.key
+data/cloud_backup.key
+data/setup_code.hash
+data/*.key
+data/*token*
+
+# Dados pessoais, assinaturas e backups
+data/backups/*
+!data/backups/.htaccess
+data/cloud_sync/*
+!data/cloud_sync/.htaccess
+data/signatures/*
+!data/signatures/.gitkeep
+data/user_photos/*
+!data/user_photos/.htaccess
+data/user_signatures/*
+!data/user_signatures/.htaccess
+
+# Logs, links temporários e binários locais
+*.log
+*.tmp
+*.bak
+*.zip
+cloudflared.exe
+LINK_GUACAS_WEB_ATUAL.*
+LINKS_PUBLICOS_TEMPORARIOS.*
+data/public_tunnel_url.txt
+data/TUNEL_*
+
+# Arquivos do sistema operacional e do editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

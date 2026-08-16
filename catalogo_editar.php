@@ -1,0 +1,13 @@
+<?php
+require __DIR__ . '/config.php';
+$admin=require_user(['ADMIN']);$pdo=db();$id=(int)($_GET['id']??0);
+$st=$pdo->prepare("SELECT * FROM occurrence_catalog WHERE id=?");$st->execute([$id]);$item=$st->fetch();if(!$item){http_response_code(404);exit('Item não encontrado.');}
+$msg=$err='';
+if($_SERVER['REQUEST_METHOD']==='POST'){
+ if(!hash_equals(csrf_token(),$_POST['csrf']??''))exit('CSRF inválido');
+ $nature=normalize_name($_POST['nature']??'');$type=trim($_POST['type']??'');$active=isset($_POST['active'])?1:0;$just=trim($_POST['justification']??'');
+ if(mb_strlen($nature)<3||mb_strlen($type)<3||mb_strlen($just)<5)$err='Preencha natureza, tipo e justificativa.';
+ else{try{$up=$pdo->prepare("UPDATE occurrence_catalog SET nature=?,type=?,active=? WHERE id=?");$up->execute([$nature,$type,$active,$id]);admin_audit($pdo,(int)$admin['id'],'UPDATE','OCCURRENCE_CATALOG',(string)$id,$just,$item['nature'].' / '.$item['type'].' -> '.$nature.' / '.$type);$msg='Catálogo atualizado.';$st->execute([$id]);$item=$st->fetch();}catch(Throwable $e){$err='Não foi possível atualizar; verifique se já existe item igual.';}}
+}
+?>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Editar catálogo - <?=e(app_display_name())?></title><link rel="stylesheet" href="assets/app.css"></head><body><button type="button" class="back-floating no-print" onclick="if(history.length>1){history.back()}else{location.href='index.php'}" aria-label="Voltar para a página anterior">← Voltar</button><header class="topbar"><div class="top-left"><img src="assets/logo_oficial_bombeiros.jpeg" class="logo-mini" alt="Logo"><div><strong><?=e(app_display_name())?></strong><span>Catálogo de Ocorrências</span></div></div><div class="right"><a href="configuracoes.php">Voltar</a><a href="logout.php">Sair</a></div></header><main class="layout"><section class="card"><h2>Editar natureza/tipo</h2><?php if($msg):?><div class="alert ok"><?=e($msg)?></div><?php endif;?><?php if($err):?><div class="alert error"><?=e($err)?></div><?php endif;?><form method="post"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><div class="grid2"><label>Natureza<input name="nature" value="<?=e($item['nature'])?>" required></label><label>Tipo<input name="type" value="<?=e($item['type'])?>" required></label></div><label class="checkbox-line"><input type="checkbox" name="active" value="1" <?=$item['active']?'checked':''?>> Disponível na abertura de ocorrências</label><label>Justificativa<textarea name="justification" required></textarea></label><button class="primary">Salvar alteração</button></form></section></main><script src="assets/security.js"></script></body></html>

@@ -1,0 +1,14 @@
+<?php
+require __DIR__ . '/config.php';
+$admin=require_user(['ADMIN']);$pdo=db();
+$security=$pdo->query("SELECT s.*,COALESCE(u.bc_name,u.name,'SISTEMA/ANÔNIMO') user_name FROM security_audit s LEFT JOIN users u ON u.id=s.user_id ORDER BY s.id DESC LIMIT 300")->fetchAll();
+$administrative=$pdo->query("SELECT a.*,COALESCE(u.bc_name,u.name,'ADMIN') user_name FROM admin_audit a LEFT JOIN users u ON u.id=a.admin_user_id ORDER BY a.id DESC LIMIT 300")->fetchAll();
+$securityChain=verify_audit_chain($pdo,'security_audit');
+$adminChain=verify_audit_chain($pdo,'admin_audit');
+?>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Auditoria - <?=e(app_display_name())?></title><link rel="stylesheet" href="assets/app.css"></head><body>
+<button class="back-floating" onclick="history.back()">← Voltar</button><header class="topbar"><div class="top-left"><img src="assets/logo_oficial_bombeiros.jpeg" class="logo-mini"><div><strong><?=e(app_display_name())?></strong><span>Auditoria Imutável</span></div></div><div class="right"><a href="seguranca.php">Segurança</a><a href="logout.php">Sair</a></div></header>
+<main class="layout"><section class="kpi-grid"><article class="kpi"><span>Cadeia de segurança</span><strong><?=$securityChain?'ÍNTEGRA':'VERIFICAR'?></strong></article><article class="kpi"><span>Cadeia administrativa</span><strong><?=$adminChain?'ÍNTEGRA':'VERIFICAR'?></strong></article><article class="kpi"><span>Eventos segurança</span><strong><?=count($security)?></strong></article></section>
+<section class="card"><h2>Eventos de segurança</h2><p class="muted">Novos registros possuem hash encadeado e não podem ser alterados ou excluídos pela aplicação.</p><div class="table-wrap"><table><thead><tr><th>Data</th><th>Usuário</th><th>Ação</th><th>Resultado</th><th>Entidade</th><th>Detalhes</th></tr></thead><tbody><?php foreach($security as $r):?><tr><td><?=e($r['created_at'])?></td><td><?=e($r['user_name'])?></td><td><?=e($r['action'])?></td><td><?=$r['success']?'<span class="badge financial-ok">OK</span>':'<span class="badge financial-bad">FALHA</span>'?></td><td><?=e(($r['entity_type']?:'-').' '.($r['entity_id']?:''))?></td><td><?=e($r['details']?:'')?></td></tr><?php endforeach;?></tbody></table></div></section>
+<section class="card"><h2>Auditoria administrativa</h2><div class="table-wrap"><table><thead><tr><th>Data</th><th>Admin</th><th>Ação</th><th>Entidade</th><th>Justificativa</th><th>Detalhes</th></tr></thead><tbody><?php foreach($administrative as $r):?><tr><td><?=e($r['created_at'])?></td><td><?=e($r['user_name'])?></td><td><?=e($r['action'])?></td><td><?=e(($r['entity_type']?:'-').' '.($r['entity_id']?:''))?></td><td><?=e($r['justification']?:'')?></td><td><?=e($r['details']?:'')?></td></tr><?php endforeach;?></tbody></table></div></section>
+</main><script src="assets/security.js"></script></body></html>

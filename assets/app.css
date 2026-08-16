@@ -1,0 +1,656 @@
+:root{--red:#8b1e24;--red2:#64161a;--dark:#16181d;--bg:#f2f3f5;--line:#d8dadd;--ok:#1d7a46;--warn:#a06b00}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#202226}
+a{color:inherit}.center{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#181a1f,#6b171c)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 4px 14px #00000010}.auth{width:min(460px,100%);text-align:center}
+.logo-wrap{display:flex;justify-content:center;margin-bottom:10px}.logo-auth{width:96px;height:96px;object-fit:contain}.logo-mini{width:42px;height:42px;object-fit:contain}
+h1,h2,h3{margin-top:0}label{display:block;text-align:left;font-weight:600;margin:12px 0}
+input,select,textarea,button{width:100%;padding:12px;border:1px solid #c7c9cd;border-radius:9px;font:inherit;background:#fff}
+button{cursor:pointer;font-weight:700}.primary{background:var(--red);color:#fff;border-color:var(--red)}.primary:hover{background:var(--red2)}
+.topbar{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 18px;background:#181a1f;color:#fff}
+.top-left{display:flex;align-items:center;gap:12px}.top-left div{display:flex;flex-direction:column}.topbar strong{font-size:20px}.topbar span{font-size:13px}.right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.right a{color:#fff}
+.layout{width:min(1200px,calc(100% - 24px));margin:18px auto;display:grid;gap:18px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}.occ{background:#fff;border:1px solid var(--line);border-left:6px solid var(--red);border-radius:12px;padding:14px}
+.occ .meta{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}.badge,.pill{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:12px;background:#e8eaed}
+.online{background:#dff4e8;color:#17643b}.offline{background:#fee1e1;color:#8e1d1d}.syncing{background:#fff0c9;color:#7a5400}
+.priority-CRITICA{background:#7a1017;color:#fff}.priority-ALTA{background:#f6d7d8}.priority-MEDIA{background:#fff0c9}.priority-BAIXA{background:#e4edf7}
+.status{font-weight:700}.muted{color:#676b73;font-size:14px}.alert{padding:10px;border-radius:8px;margin:12px 0}.ok{background:#dff4e8}.error{background:#fee1e1;color:#8e1d1d}
+.section-head{display:flex;justify-content:space-between;align-items:center}.section-head button{width:auto}.occ button{margin-top:7px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;background:#fff}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}
+.small{font-size:12px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.right{width:100%}.cards{grid-template-columns:1fr}.layout{width:min(100% - 16px,1200px)}}
+
+.logo-wrap{display:flex;justify-content:center}.logo-auth{width:170px;height:170px;object-fit:contain;border-radius:18px}.top-left{display:flex!important;flex-direction:row!important;align-items:center;gap:10px}.logo-mini{width:52px;height:52px;object-fit:contain;border-radius:10px;background:#fff}.notice{margin-top:12px;padding:12px;background:#fff4d8;border-left:4px solid #b07900;border-radius:8px}.medical-note{background:#eef4fb;border-left-color:#315d8c}.button-link{display:inline-block;margin-top:8px;padding:9px 12px;background:#8b1e24;color:#fff!important;text-decoration:none;border-radius:8px;font-weight:700}.danger{background:#731018;color:#fff;border-color:#731018}.narrow{max-width:760px}.aph-layout{width:min(1300px,calc(100% - 22px));margin:14px auto;display:grid;gap:14px}.aph-form{display:grid;gap:14px}.form-section h2{color:#761319;border-bottom:2px solid #eee;padding-bottom:7px}.form-section h3{margin-top:14px;color:#4d4f55}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}textarea{min-height:82px;resize:vertical}.check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.check-grid label{display:flex;gap:8px;align-items:center;margin:0;padding:9px;border:1px solid #ddd;border-radius:8px;font-weight:500}.check-grid input{width:auto}.vitals input{min-width:82px;padding:7px}.gcs-total{font-size:20px;padding:12px;background:#f2f2f2;border-radius:8px;margin:8px 0}.sticky-actions{position:sticky;bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;border:2px solid #8b1e24}.sticky-actions button{width:auto;min-width:220px}.signature-pad{width:100%;height:220px;border:2px dashed #8b1e24;border-radius:8px;background:#fff;touch-action:none}.signature-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}.signature-item{display:flex;gap:10px;align-items:center;border:1px solid #ddd;border-radius:10px;padding:10px}.signature-item img{width:130px;height:60px;object-fit:contain;background:#fff}.invalid-signature{opacity:.55}.action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.action-bar form{margin:0}.search-row{display:grid;grid-template-columns:2fr 1fr auto;gap:8px;align-items:end}.search-row button{width:auto}
+@media(max-width:900px){.grid3,.grid4,.check-grid{grid-template-columns:1fr 1fr}.sticky-actions{position:static;flex-direction:column;align-items:stretch}.sticky-actions button{width:100%}}
+@media(max-width:600px){.grid3,.grid4,.check-grid{grid-template-columns:1fr}.logo-auth{width:145px;height:145px}.search-row{grid-template-columns:1fr}.action-bar{flex-direction:column}}
+
+/* SICOBC V1.3 — abertura rápida, equipes e administração */
+.quick-occ{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}.quick-occ button{width:auto;padding:9px 12px;border-radius:999px;background:#fff7f7;border:1px solid #d5a6a8;color:#6e181d}.quick-occ button:hover{background:#8b1e24;color:#fff;border-color:#8b1e24}
+.primary-link{background:var(--red);color:#fff!important;border-color:var(--red)!important}.member-counter{padding:10px 12px;margin:10px 0;background:#f6f7f8;border:1px solid var(--line);border-radius:9px}.member-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px;margin:12px 0 18px}.member-row{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px;margin:0;background:#fff}.member-row input{width:auto;margin-top:4px}.member-row small{color:#676b73}.member-blocked{opacity:.52;background:#f1f1f1}.change-box{background:#fff8e7;border:1px solid #ead39a;border-radius:12px;padding:14px;margin:16px 0}.checkbox-line{display:flex;align-items:center;gap:10px}.checkbox-line input{width:auto}.timeline{display:grid;gap:10px}.timeline article{border-left:4px solid var(--red);background:#fff;padding:10px 12px;border-radius:7px}.occurrence-open{border-top:4px solid var(--red)}
+
+
+/* GUACAS V1.5 — identidade visual inspirada no brasão oficial */
+:root{
+  --red:#b10f18;
+  --red2:#75080e;
+  --red3:#d71920;
+  --gold:#f2b51d;
+  --gold2:#ffd45b;
+  --dark:#151515;
+  --dark2:#242424;
+  --cream:#fff8e9;
+  --bg:#eee9e3;
+  --line:#d5c7b0;
+  --ok:#1d7a46;
+  --warn:#a06b00;
+}
+
+body{
+  background:
+    radial-gradient(circle at top right, rgba(177,15,24,.10), transparent 32rem),
+    linear-gradient(180deg,#f7f2ec 0%,#ece7e1 100%);
+  color:#211f1f;
+}
+
+.center{
+  background:
+    radial-gradient(circle at 50% 18%, rgba(215,25,32,.42), transparent 24rem),
+    linear-gradient(145deg,#121212 0%,#4a080c 55%,#850b12 100%);
+}
+
+.card,.occ{
+  border-color:#d8c7aa;
+  box-shadow:0 7px 22px rgba(46,20,14,.10);
+}
+
+.card{
+  border-top:3px solid var(--gold);
+}
+
+.auth{
+  border:2px solid var(--gold);
+  background:linear-gradient(180deg,#fff 0%,#fffaf1 100%);
+  box-shadow:0 18px 45px rgba(0,0,0,.32);
+}
+
+.logo-auth{
+  background:#fff;
+  padding:5px;
+  border:3px solid var(--gold);
+  box-shadow:0 7px 20px rgba(112,4,10,.20);
+}
+
+.logo-mini{
+  border:2px solid var(--gold);
+  box-shadow:0 3px 10px rgba(0,0,0,.28);
+}
+
+h1,h2,h3{
+  color:#711016;
+}
+
+.auth h1{
+  color:var(--red);
+  letter-spacing:.04em;
+}
+
+.topbar{
+  background:linear-gradient(90deg,#141414 0%,#56080d 55%,#900b12 100%);
+  border-bottom:3px solid var(--gold);
+  box-shadow:0 4px 14px rgba(0,0,0,.25);
+}
+
+.topbar strong{
+  color:#fff;
+  text-shadow:0 1px 0 #000;
+}
+
+.topbar span,.topbar a{
+  color:#fff8e9;
+}
+
+.topbar a{
+  text-decoration:none;
+  font-weight:700;
+  padding:7px 9px;
+  border-radius:7px;
+  transition:.18s ease;
+}
+
+.topbar a:hover{
+  background:rgba(242,181,29,.18);
+  color:var(--gold2);
+}
+
+input,select,textarea{
+  border:1px solid #cdbb9e;
+  background:#fffdf8;
+}
+
+input:focus,select:focus,textarea:focus{
+  outline:3px solid rgba(242,181,29,.25);
+  border-color:var(--red);
+}
+
+button,.button-link{
+  transition:transform .12s ease,box-shadow .12s ease,background .12s ease;
+}
+
+button:hover,.button-link:hover{
+  transform:translateY(-1px);
+}
+
+.primary,.primary-link,.button-link{
+  background:linear-gradient(180deg,var(--red3),var(--red2));
+  border:1px solid #6e080c!important;
+  color:#fff!important;
+  box-shadow:0 3px 8px rgba(117,8,14,.20);
+}
+
+.primary:hover,.primary-link:hover,.button-link:hover{
+  background:linear-gradient(180deg,#ca111a,#64070b);
+}
+
+.section-head{
+  border-bottom:2px solid rgba(242,181,29,.65);
+  padding-bottom:8px;
+  margin-bottom:10px;
+}
+
+.badge,.pill{
+  border:1px solid #d8c7aa;
+}
+
+.occ{
+  border-left:6px solid var(--red);
+  border-top:1px solid var(--gold);
+}
+
+.quick-occ button{
+  background:#fff9ee;
+  border-color:#d8b96e;
+  color:#741016;
+}
+.quick-occ button:hover{
+  background:var(--red);
+  border-color:var(--gold);
+  color:#fff;
+}
+
+.form-section h2{
+  color:#7d0d13;
+  border-bottom:2px solid var(--gold);
+}
+
+.change-box{
+  background:#fff8e8;
+  border-color:#e1bd60;
+}
+
+.timeline article{
+  border-left-color:var(--red);
+  border-top:1px solid rgba(242,181,29,.6);
+}
+
+/* Botão universal VOLTAR */
+.back-floating{
+  position:fixed;
+  left:16px;
+  bottom:18px;
+  z-index:1000;
+  width:auto!important;
+  min-width:116px;
+  padding:10px 15px;
+  border-radius:999px;
+  border:2px solid var(--gold)!important;
+  background:linear-gradient(180deg,#242424,#080808)!important;
+  color:#fff!important;
+  font-weight:800;
+  box-shadow:0 7px 20px rgba(0,0,0,.30);
+}
+.back-floating:hover{
+  background:linear-gradient(180deg,var(--red3),var(--red2))!important;
+  color:#fff6d9!important;
+}
+
+@media(max-width:700px){
+  .back-floating{
+    left:10px;
+    bottom:10px;
+    min-width:104px;
+    padding:9px 12px;
+  }
+}
+
+@media print{
+  .back-floating,.no-print{display:none!important}
+}
+
+
+/* GUACAS V1.6 — exclusões seguras, inadimplência e WhatsApp */
+.financial-ok{background:#dff4e8;color:#17643b;border-color:#94caaa}
+.financial-bad{background:#ffe1e1;color:#8d1017;border-color:#d88f93;font-weight:800}
+.danger-zone{border:2px solid #b10f18!important;background:linear-gradient(180deg,#fff,#fff2f2)}
+.danger-zone h2{color:#8d0b12}
+.danger,.danger-link{background:#8d0b12!important;color:#fff!important;border-color:#62070b!important}
+.danger-link{display:inline-block;padding:6px 8px;border-radius:7px;text-decoration:none}
+.inline-form{display:inline}.inline-form button{width:auto;padding:7px 10px}
+.whatsapp-button{display:block;margin:12px 0;padding:13px 16px;border-radius:10px;background:#187b43;color:#fff!important;text-decoration:none;font-weight:800;border:2px solid #c9a33e;box-shadow:0 4px 12px #0002}
+.whatsapp-button:hover{background:#126535;transform:translateY(-1px)}
+.whatsapp-button.complaint{background:#9a1118}.whatsapp-button.complaint:hover{background:#761016}
+.whatsapp-button.compact{padding:10px 12px;margin:8px 0}
+.contact-card{max-width:520px}
+
+
+/* GUACAS V1.7 — relatório automático, carteirinha e solicitação pública */
+.public-request-button{display:block;padding:12px 15px;border-radius:10px;background:linear-gradient(180deg,#d71920,#75080e);color:#fff!important;text-decoration:none;font-weight:900;border:2px solid var(--gold);box-shadow:0 4px 12px #0002}
+.public-bg{min-height:100vh;background:linear-gradient(145deg,#151515,#65080d 55%,#9c0d14);padding:22px}.public-request-wrap{width:min(860px,100%);margin:auto}.public-request-card{border:2px solid var(--gold)}.public-protocol{font-size:28px;font-weight:900;color:var(--red);letter-spacing:.04em;margin:10px 0}.hp-field{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;opacity:0!important}.public-source{padding:8px 10px;margin:8px 0;background:#fff1cf;border:1px solid #d8b96e;border-radius:8px;color:#6f0d12;font-size:12px}.large-notes{min-height:220px}.claim-occ{margin:8px 0!important}.id-note{font-size:12px;color:#666}
+
+
+/* GUACAS V2.0 — Central Operacional Dinâmica */
+.dynamic-body,.field-body{background:#e9e6e1}
+.dynamic-topbar{position:sticky;top:0}
+.top-action{width:auto!important;padding:7px 10px!important;border-radius:8px!important;background:#222!important;color:#fff!important;border:1px solid #f2b51d!important}
+.top-action.active{background:#197747!important}
+.dynamic-layout{width:min(1480px,calc(100% - 20px));margin:14px auto;display:grid;gap:14px}
+.dynamic-columns{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;align-items:start}
+.main-column,.side-column{display:grid;gap:14px}.side-column{position:sticky;top:85px}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:10px}
+.kpi{background:#fff;border-radius:12px;padding:13px;border:1px solid #d8c7aa;border-top:4px solid #f2b51d;box-shadow:0 4px 12px #0001}.kpi span{display:block;font-size:12px;color:#666;font-weight:700}.kpi strong{font-size:28px;color:#711016}.kpi-critical{background:#fff0f0;border-top-color:#b10f18}.kpi-critical strong{color:#b10f18}.kpi-team{border-top-color:#1d7a46}.kpi-engaged{border-top-color:#d78519}
+.quick-panel{padding-bottom:12px}.compact-form{display:grid;gap:8px}
+.board-head{gap:12px;align-items:flex-end}.board-filters{display:flex;gap:7px;flex-wrap:wrap}.board-filters input,.board-filters select{width:auto;min-width:160px;padding:8px}
+.operation-board{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:12px}
+.op-card,.field-occ{position:relative;background:#fff;border:1px solid #d7c8b2;border-left:7px solid #777;border-radius:13px;padding:13px;box-shadow:0 5px 14px #0001;overflow:hidden}
+.op-card.status-solicitada,.field-occ.status-solicitada{border-left-color:#b10f18}.op-card.status-aberta,.field-occ.status-aberta{border-left-color:#b10f18}.op-card.status-despachada,.field-occ.status-despachada{border-left-color:#e78517}.op-card.status-a-caminho,.field-occ.status-a-caminho{border-left-color:#e3aa16}.op-card.status-no-local,.field-occ.status-no-local{border-left-color:#286bc0}.op-card.status-em-atendimento,.field-occ.status-em-atendimento{border-left-color:#663bb7}.op-card.status-retornando,.field-occ.status-retornando{border-left-color:#29805a}.op-card.status-encerrada,.field-occ.status-encerrada{border-left-color:#777;opacity:.76}
+.op-card-top{display:flex;justify-content:space-between;gap:8px;align-items:start}.protocol{font-size:17px;color:#711016}.op-nature{font-size:10px;font-weight:800;color:#777;text-transform:uppercase;margin-top:2px}.priority-badge{display:inline-flex;width:auto;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:900}.priority-CRITICA{background:#8e0c13;color:#fff}.priority-ALTA{background:#f2c5c7;color:#75080e}.priority-MEDIA{background:#ffeab7;color:#6f4d00}.priority-BAIXA{background:#dff4e8;color:#17643b}
+.op-card h3{margin:8px 0 5px}.op-address,.field-address{font-weight:700;margin:5px 0}.op-meta,.op-counters{display:flex;gap:6px;flex-wrap:wrap;margin:7px 0}.op-meta span,.op-counters span{background:#f4f1ec;border:1px solid #ddd2c2;border-radius:999px;padding:5px 8px;font-size:11px}.status-chip{font-weight:900}.op-details{font-size:12px;color:#555;white-space:pre-line;max-height:65px;overflow:auto}
+.op-actions,.field-main-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.secondary-link{background:#292929!important;border-color:#f2b51d!important}
+.dispatch-mini{display:grid;grid-template-columns:1fr 1fr auto;gap:5px;margin-top:8px;padding-top:8px;border-top:1px solid #eadbbf}.dispatch-mini select,.dispatch-mini button{padding:7px;font-size:11px}
+.side-list{display:grid;gap:7px}.side-item{display:grid;gap:2px;border:1px solid #ddd2c2;border-left:4px solid #777;border-radius:8px;padding:9px;background:#fff}.side-item>div{display:flex;justify-content:space-between;gap:8px}.side-item small{display:block;color:#666}.side-item.available{border-left-color:#1d7a46}.side-item.engaged{border-left-color:#d78519}
+.shortcut-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.shortcut-grid a{padding:10px;background:#fff7e6;border:1px solid #d9b762;border-radius:8px;text-decoration:none;color:#6d1015;font-weight:800}
+.critical-pulse{animation:criticalPulse 1.5s ease-in-out infinite}@keyframes criticalPulse{0%,100%{box-shadow:0 4px 14px #0001}50%{box-shadow:0 0 0 4px #b10f1833,0 5px 18px #b10f1844}}
+.field-layout{width:min(1000px,calc(100% - 16px));margin:12px auto;display:grid;gap:12px}.field-identity{display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:12px;align-items:center}.field-identity div{display:grid}.field-identity strong{font-size:20px;color:#711016}.field-identity span{font-size:12px;color:#666}.field-board{display:grid;gap:12px}.field-occ h2{margin:6px 0;color:#711016}.field-status-actions{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}.field-status-actions button{font-size:11px;padding:10px 5px}
+.occurrence-detail-layout{max-width:1200px}.occurrence-hero{border-left:8px solid #b10f18}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.message-list{height:300px;overflow:auto;background:#f4f1ec;border-radius:10px;padding:9px;display:grid;gap:7px}.message{background:#fff;border-left:4px solid #b10f18;border-radius:8px;padding:8px}.message p{margin:4px 0;white-space:pre-wrap}.message small{color:#777}.message-compose{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:8px}.message-compose button{width:auto}
+.checklist-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stock-low{background:#fff0f0}.report-row{display:grid;grid-template-columns:minmax(130px,1fr) 2fr 40px;gap:8px;align-items:center;margin:8px 0;font-size:12px}.report-bar{height:11px;background:#eee;border-radius:999px;overflow:hidden}.report-bar i{display:block;height:100%;background:linear-gradient(90deg,#b10f18,#f2b51d);border-radius:999px}.public-location-box{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}.public-location-box button{width:auto}
+@media(max-width:1150px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.dynamic-columns{grid-template-columns:1fr}.side-column{position:static;grid-template-columns:1fr 1fr}.field-identity{grid-template-columns:1fr 1fr}.field-status-actions{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.kpi-grid{grid-template-columns:1fr 1fr}.operation-board{grid-template-columns:1fr}.side-column{grid-template-columns:1fr}.dispatch-mini{grid-template-columns:1fr}.field-identity{grid-template-columns:1fr}.field-status-actions{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr}.checklist-grid{grid-template-columns:1fr}.message-compose{grid-template-columns:1fr}.board-filters{width:100%}.board-filters input,.board-filters select{width:100%}.report-row{grid-template-columns:1fr 1fr 35px}}
+@media print{.dynamic-topbar,.back-floating,.no-print{display:none!important}.dynamic-layout,.layout{width:100%;margin:0}.card{box-shadow:none}}
+
+
+/* GUACAS V2.1 — PADRÃO DE ESCRITA */
+input[type="text"],input[type="search"],textarea{ text-transform:uppercase; }
+input[type="email"]{ text-transform:lowercase; }
+.level-select{font-weight:900;border:2px solid #b10f18!important;background:#fff7e8!important;color:#741016!important}
+.level-badge{display:inline-flex;padding:5px 8px;border-radius:999px;border:1px solid #f2b51d;background:#201719;color:#fff;font-size:11px;font-weight:900}
+.level-N1_CRITICO{background:#8f0c13;color:#fff}.level-N2_URGENTE{background:#df7719;color:#fff}.level-N3_PRIORITARIO{background:#f2c641;color:#332500}.level-N4_BAIXA_PRIORIDADE{background:#288157;color:#fff}.level-NAO_CLASSIFICADO{background:#666;color:#fff}
+.public-alert-overlay{position:fixed;inset:0;background:#0009;z-index:5000;display:grid;place-items:center;padding:18px}.public-alert-box{width:min(620px,100%);background:#fff;border:4px solid #f2b51d;border-radius:18px;box-shadow:0 20px 60px #0008;overflow:hidden}.public-alert-head{background:linear-gradient(90deg,#151515,#9a0d15);color:#fff;padding:17px;font-size:21px;font-weight:900}.public-alert-body{padding:20px}.public-alert-body h2{font-size:27px;margin:0 0 8px}.public-alert-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.public-alert-actions a,.public-alert-actions button{width:auto;min-width:160px}.time-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.time-metric{padding:10px;background:#fff8e8;border:1px solid #e2c36f;border-radius:9px}.time-metric b{display:block;color:#741016;font-size:11px}.time-metric strong{font-size:15px}.phrase-bank{display:grid;gap:10px}.phrase-category{border:1px solid #dfc071;border-radius:10px;padding:10px;background:#fffaf0}.phrase-category h3{margin:0 0 7px;font-size:14px}.phrase-buttons{display:flex;gap:6px;flex-wrap:wrap}.phrase-buttons button{width:auto;font-size:11px;padding:7px 9px;background:#fff;border:1px solid #b10f18;color:#741016}.registered-signature-preview{max-width:280px;height:90px;object-fit:contain;border:1px solid #d1b46b;background:#fff;border-radius:8px}.signature-admin-card{display:grid;grid-template-columns:300px 1fr;gap:18px}.registration-highlight{font-size:22px;font-weight:900;color:#8b0e15;background:#fff5df;border:2px solid #f2b51d;padding:10px;border-radius:10px;text-align:center}
+@media(max-width:800px){.time-metrics{grid-template-columns:1fr 1fr}.signature-admin-card{grid-template-columns:1fr}}
+
+
+/* GUACAS V2.2 — Recuperação de senha e GPS do solicitante */
+.forgot-password-link{
+  display:inline-block;
+  padding:9px 13px;
+  border-radius:9px;
+  border:1px solid #d6ba73;
+  background:#fff8e8;
+  color:#741016;
+  font-weight:800;
+  text-decoration:none;
+}
+.forgot-password-link:hover{background:#f2b51d;color:#351d00}
+.recovery-card{max-width:470px}
+.gps-route-link{
+  display:inline-block;
+  width:auto!important;
+  margin-left:6px;
+  padding:5px 8px!important;
+  border-radius:7px;
+  background:#1f6f45!important;
+  border:1px solid #155333!important;
+  color:white!important;
+  font-size:11px;
+  font-weight:900;
+  text-decoration:none;
+}
+.gps-route-link:hover{background:#155333!important}
+.public-location-box{
+  border:2px solid #d7b55e;
+  background:#fff8e8;
+  padding:10px;
+  border-radius:10px;
+}
+
+
+/* GUACAS V2.4 — mensagem visível na Central quando ocorrência pública chega */
+.central-public-alerts-zone{margin:12px 0 16px}
+.central-alert-card{border:2px solid #d7b55e;box-shadow:0 8px 24px rgba(122,11,16,.08)}
+.central-alerts-box{display:grid;gap:10px}
+.central-alert-item{
+  border-left:7px solid #a80e16;
+  border-radius:12px;
+  padding:12px;
+  background:#fff8e8;
+  box-shadow:0 4px 14px rgba(0,0,0,.06);
+}
+.central-alert-item.priority-critica{border-left-color:#7a0710;background:#ffe9e9}
+.central-alert-item.priority-alta{border-left-color:#d86800;background:#fff1de}
+.central-alert-item.priority-media{border-left-color:#c79a0b}
+.central-alert-item.priority-baixa{border-left-color:#2c7a49;background:#eefaf2}
+.central-alert-item-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  margin-bottom:6px;
+}
+.central-alert-time{font-size:12px;font-weight:800;color:#7a0b10}
+.central-alert-item-body p{margin:5px 0}
+.central-alert-item-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.central-public-strip{
+  position:fixed;
+  top:14px;
+  left:50%;
+  transform:translateX(-50%) translateY(-16px);
+  width:min(980px,calc(100% - 20px));
+  z-index:9999;
+  opacity:0;
+  transition:.2s ease;
+}
+.central-public-strip.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.central-public-strip-inner{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#a80e16,#6b0810);
+  color:#fff;
+  border:2px solid #f2b51d;
+  border-radius:14px;
+  padding:14px;
+  box-shadow:0 12px 28px rgba(0,0,0,.28);
+}
+.central-public-strip .button-link{
+  background:#f2b51d!important;
+  color:#4a2a00!important;
+  border:none!important;
+}
+.central-public-strip .close-strip{
+  border:none;
+  border-radius:9px;
+  padding:10px 12px;
+  font-weight:900;
+  cursor:pointer;
+  background:#ffffff;
+  color:#7a0710;
+}
+
+@media(max-width:760px){
+  .central-alert-item-top{flex-direction:column;align-items:flex-start}
+  .central-public-strip-inner{justify-content:flex-start}
+}
+
+
+/* GUACAS V2.5 — alarme repetitivo + timer + vermelho somente pública não atendida */
+.public-unattended-card{
+  border:3px solid #b10f18!important;
+  border-left:10px solid #7a0710!important;
+  background:linear-gradient(135deg,#fff7f7,#ffe9e9)!important;
+  box-shadow:0 0 0 3px rgba(177,15,24,.10),0 8px 24px rgba(122,7,16,.20)!important;
+  opacity:1!important;
+}
+.public-source-unattended{
+  background:#9d0c14!important;
+  color:#fff!important;
+  border:2px solid #f2b51d!important;
+  border-radius:10px;
+  padding:9px!important;
+}
+.public-wait-timer{
+  display:inline-flex;
+  margin-left:8px;
+  padding:4px 7px;
+  border-radius:999px;
+  background:#fff;
+  color:#8e0c13;
+  font-weight:900;
+  border:2px solid #f2b51d;
+}
+.blink-timer{animation:guacasTimerBlink .75s steps(2,end) infinite}
+@keyframes guacasTimerBlink{
+  0%,45%{opacity:1}
+  46%,100%{opacity:.35}
+}
+.ack-public-button{
+  background:linear-gradient(135deg,#b10f18,#71080d)!important;
+  color:#fff!important;
+  border:2px solid #f2b51d!important;
+  font-weight:900!important;
+  box-shadow:0 4px 12px rgba(122,7,16,.25);
+}
+.public-modal-timer{
+  display:inline-block;
+  background:#fff0b8;
+  color:#7a0710;
+  border:2px solid #f2b51d;
+  border-radius:10px;
+  padding:9px 12px;
+  font-size:18px;
+  font-weight:900;
+  margin:6px 0 12px;
+}
+.public-alarm-note{
+  color:#8e0c13;
+  font-weight:900;
+  font-size:13px;
+  margin-top:12px;
+}
+.alarm-state{
+  font-weight:900!important;
+  border:2px solid transparent!important;
+}
+.alarm-off{background:#555!important;color:#fff!important}
+.alarm-on{background:#1d7a46!important;color:#fff!important}
+.alarm-ringing{
+  background:#b10f18!important;
+  color:#fff!important;
+  border-color:#f2b51d!important;
+  animation:guacasAlarmBlink .55s steps(2,end) infinite;
+}
+@keyframes guacasAlarmBlink{
+  0%,45%{transform:scale(1);filter:brightness(1)}
+  46%,100%{transform:scale(1.04);filter:brightness(1.45)}
+}
+.public-ack-info{
+  margin-top:10px;
+  padding:9px 12px;
+  border-radius:10px;
+  border:1px solid #d7b55e;
+  background:#fff8e8;
+  color:#711016;
+  font-weight:900;
+}
+
+
+/* GUACAS V3.0 — segurança, backup e homologação */
+.security-idle-warning{
+ position:fixed;right:16px;bottom:16px;z-index:10000;width:min(390px,calc(100% - 32px));
+ display:grid;gap:8px;padding:14px;border-radius:14px;background:#161616;color:#fff;
+ border:2px solid #f2b51d;box-shadow:0 12px 30px #0007
+}
+.security-idle-warning strong{color:#ffd45b;font-size:16px}
+.security-idle-warning button{width:auto;background:#b10f18;color:#fff;border:1px solid #f2b51d;border-radius:8px;padding:9px;font-weight:900}
+.recovery-codes{border:3px solid #b10f18!important;background:#fff5dd!important}
+.recovery-code-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.recovery-code-grid code{padding:10px;text-align:center;background:#151515;color:#ffd45b;border-radius:7px;font-size:14px;font-weight:900}
+.twofa-setup-box{padding:14px;border:2px solid #d7b55e;border-radius:12px;background:#fff8e8}
+.twofa-secret{padding:14px;border:2px dashed #b10f18;border-radius:10px;background:#fff;text-align:center;font-family:monospace;font-size:20px;font-weight:900;letter-spacing:.14em;word-break:break-all}
+.uri-code{display:block;word-break:break-all;padding:8px;background:#eee;border-radius:7px}
+.danger-zone{border:2px solid #b10f18!important;background:#fff3f3!important}
+.health-grid{display:grid;gap:8px}
+.health-item{display:grid;grid-template-columns:35px 1fr auto;gap:10px;align-items:center;padding:11px;border:1px solid #ddd;border-radius:10px}
+.health-item p{margin:2px 0;color:#666;font-size:12px}.health-ok{border-left:5px solid #25824f}.health-atenção{border-left:5px solid #d79616;background:#fff9e9}.health-erro{border-left:5px solid #b10f18;background:#fff0f0}
+.homologation-list{display:grid;gap:10px}.homologation-item{padding:12px;border:1px solid #ddd;border-left:6px solid #999;border-radius:10px;background:#fff}.homologation-item.status-aprovado{border-left-color:#25824f}.homologation-item.status-reprovado{border-left-color:#b10f18;background:#fff3f3}.homologation-item.status-pendente{border-left-color:#d79616}.homologation-title{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}.homologation-title strong{flex:1}
+@media(max-width:700px){.recovery-code-grid{grid-template-columns:1fr 1fr}.health-item{grid-template-columns:30px 1fr}.health-item>b{grid-column:2}.homologation-title strong{flex-basis:100%}}
+
+
+/* GUACAS V3.1 — foto 3x4 por arquivo ou webcam/câmera */
+.photo-capture-box{
+ display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:center;
+ margin:14px 0;padding:16px;border:2px solid #d8b96e;border-radius:14px;background:#fff9ee
+}
+.photo-capture-preview{
+ width:105px!important;height:140px!important;overflow:hidden!important;
+ border:3px solid #f2b51d!important;border-radius:11px!important;background:#eee!important;
+ display:grid!important;place-items:center!important;text-align:center;font-weight:900;color:#7b5b16
+}
+.photo-capture-preview img{width:100%!important;height:100%!important;object-fit:cover!important}
+.photo-capture-controls{display:grid;gap:8px}
+.photo-choice-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.photo-file-button,.camera-button,.photo-clear-button{
+ display:inline-flex;align-items:center;justify-content:center;width:auto!important;
+ min-height:42px;padding:9px 13px;border-radius:9px;font-weight:900;cursor:pointer;text-decoration:none
+}
+.photo-file-button{background:#161616;color:#fff;border:2px solid #f2b51d}
+.photo-file-button input{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.camera-button{background:linear-gradient(135deg,#a80e16,#70080d);color:#fff;border:2px solid #f2b51d}
+.photo-clear-button{background:#fff;color:#721015;border:1px solid #b99237}
+.camera-state{font-size:12px;color:#666}
+.camera-state.ok{color:#17643b;font-weight:800}.camera-state.error{color:#9e1018;font-weight:800}.camera-state.working{color:#805d00;font-weight:800}
+
+.camera-modal{
+ position:fixed;inset:0;z-index:12000;background:rgba(0,0,0,.82);
+ display:grid;place-items:center;padding:15px
+}
+.camera-modal[hidden]{display:none!important}
+.camera-dialog{
+ width:min(620px,100%);background:#fff;border:3px solid #f2b51d;border-radius:16px;
+ overflow:hidden;box-shadow:0 20px 60px #0009
+}
+.camera-dialog-head{
+ display:flex;justify-content:space-between;align-items:center;gap:10px;
+ background:linear-gradient(135deg,#151515,#75080e);color:#ffd45b;padding:12px 14px
+}
+.camera-dialog-head button{width:auto;background:#fff;color:#75080e;border:0;border-radius:7px;padding:6px 10px;font-weight:900}
+.camera-video-frame{
+ position:relative;width:min(100%,450px);aspect-ratio:3/4;margin:15px auto;
+ overflow:hidden;background:#111;border:3px solid #b10f18;border-radius:13px
+}
+.camera-video-frame video{
+ width:100%;height:100%;object-fit:cover;display:block;transform:scaleX(-1)
+}
+.camera-guide{
+ position:absolute;inset:7%;border:3px dashed rgba(255,212,91,.9);border-radius:45% 45% 35% 35%;
+ pointer-events:none;display:flex;align-items:flex-end;justify-content:center;padding:12px
+}
+.camera-guide span{
+ background:rgba(0,0,0,.68);color:#fff;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800
+}
+.camera-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:0 15px 16px}
+.camera-actions button{width:auto!important}
+body.camera-open{overflow:hidden}
+@media(max-width:650px){
+ .photo-capture-box{grid-template-columns:1fr}.photo-capture-preview{margin:auto}
+ .photo-choice-buttons{display:grid;grid-template-columns:1fr}.photo-file-button,.camera-button,.photo-clear-button{width:100%!important}
+ .camera-dialog{max-height:95vh;overflow:auto}.camera-video-frame{width:min(88vw,360px)}
+}
+
+
+/* GUACAS V3.2 — Apps PWA + Google Drive */
+.install-pwa-button{
+ width:auto!important;min-height:43px;padding:10px 14px!important;border-radius:10px!important;
+ border:2px solid #f2b51d!important;background:linear-gradient(135deg,#b10f18,#75080e)!important;
+ color:#fff!important;font-weight:900!important;cursor:pointer
+}
+.install-pwa-button.dark{background:#161616!important;color:#ffd45b!important}
+.install-pwa-button.installed{background:#1d7a46!important;border-color:#7bd5a3!important}
+.pwa-help-overlay{position:fixed;inset:0;z-index:13000;background:#000b;display:grid;place-items:center;padding:18px}
+.pwa-help-box{width:min(440px,100%);background:#fff;border:3px solid #f2b51d;border-radius:16px;padding:18px;box-shadow:0 18px 50px #0008}
+.pwa-help-box h2{color:#7a0710}.pwa-help-box button{width:auto}
+
+.public-app-home{min-height:100vh;background:radial-gradient(circle at top,#fff8e9,#eadcc4);display:grid;place-items:center;padding:16px}
+.firefighter-app-home{min-height:100vh;background:radial-gradient(circle at top,#3a1013,#101010);display:grid;place-items:center;padding:16px;color:#fff}
+.public-app-shell,.firefighter-app-shell{width:min(520px,100%);text-align:center;display:grid;gap:14px;justify-items:center}
+.app-home-icon{width:130px;height:130px;object-fit:cover;border-radius:24px;box-shadow:0 10px 30px #0004}
+.public-app-shell h1,.firefighter-app-shell h1{margin:0;font-size:32px}
+.firefighter-app-shell .notice{color:#222;text-align:left}
+.public-app-emergency-button{display:block;width:100%;padding:18px 15px;background:linear-gradient(135deg,#b10f18,#75080e);color:#fff!important;border:3px solid #f2b51d;border-radius:16px;text-decoration:none;font-size:22px;font-weight:900;box-shadow:0 8px 22px #75080e44}
+.public-app-emergency-button.firefighter-open{background:linear-gradient(135deg,#181818,#75080e)}
+.app-home-links{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.app-home-links a{padding:9px 11px;border-radius:9px;background:#fff;color:#721015;text-decoration:none;font-weight:800}
+
+.apps-landing{min-height:100vh;background:#f2eee7}.apps-page{width:min(850px,calc(100% - 24px));margin:30px auto;text-align:center}
+.app-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+.app-choice-card{display:flex;gap:16px;align-items:center;text-align:left;padding:18px;border-radius:16px;text-decoration:none;box-shadow:0 8px 22px #0002;border:3px solid #f2b51d}
+.app-choice-card img{width:95px;height:95px;border-radius:20px}.app-choice-card div{display:grid;gap:6px}.app-choice-card strong{font-size:22px}
+.app-choice-card.public{background:#fff8e9;color:#7a0710}.app-choice-card.firefighters{background:#171717;color:#fff}
+
+.cloud-hero{display:flex;justify-content:space-between;gap:18px;align-items:center;background:linear-gradient(135deg,#fff,#fff8e8)}
+.cloud-status{padding:12px 15px;border-radius:999px;font-weight:900;white-space:nowrap}.cloud-status.connected{background:#dff4e8;color:#17643b}.cloud-status.disconnected{background:#eee;color:#555}
+.callback-box{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;padding:12px;background:#fff8e8;border:2px solid #d7b55e;border-radius:10px;margin:12px 0}.callback-box code{word-break:break-all;background:#fff;padding:8px;border-radius:7px}.callback-box button{width:auto}
+.cloud-key-card{border:2px solid #b10f18!important;background:#fff4e4!important}
+.app-admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.app-admin-card{display:flex;gap:12px;align-items:center;padding:14px;border:2px solid #f2b51d;border-radius:14px;text-decoration:none}.app-admin-card img{width:78px;height:78px;border-radius:15px}.app-admin-card div{display:grid;gap:5px}.app-admin-card span{font-size:11px;word-break:break-all}.app-admin-card.public{background:#fff8e8;color:#75080e}.app-admin-card.firefighters{background:#171717;color:#fff}
+.deployment-links{display:grid;gap:8px}.deployment-links>div{display:grid;grid-template-columns:210px 1fr;gap:8px;align-items:center;padding:9px;border-bottom:1px solid #ddd}.deployment-links code{word-break:break-all;background:#eee;padding:6px;border-radius:6px}
+
+@media(max-width:720px){
+ .app-choice-grid,.app-admin-grid{grid-template-columns:1fr}
+ .cloud-hero{display:grid}.callback-box{grid-template-columns:1fr}
+ .deployment-links>div{grid-template-columns:1fr}
+ .app-choice-card strong{font-size:18px}
+}
+
+/* GUACAS V3.2.1 — assistente OAuth */
+.oauth-warning{margin:12px 0;padding:14px;border:3px solid #b10f18;border-radius:12px;background:#fff0f0;color:#69070c}
+.oauth-warning code{display:block;margin:8px 0;padding:9px;background:#fff;border:1px solid #d7b55e;border-radius:7px;word-break:break-all;color:#222}
+.oauth-steps{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}
+.oauth-steps article{display:grid;grid-template-columns:38px 1fr;gap:9px;align-items:start;padding:10px;border:1px solid #d7b55e;border-radius:10px;background:#fff9eb}
+.oauth-steps article>span{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#8d0d14;color:white;border:2px solid #f2b51d;font-weight:900}
+.oauth-steps p{margin:3px 0;font-size:12px}
+@media(max-width:650px){.oauth-steps{grid-template-columns:1fr}}
+
+
+/* GUACAS V3.3 — nuvem simples por pasta sincronizada */
+.sync-cloud-explanation{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 16px}
+.sync-cloud-explanation article{padding:12px;border:2px solid #d7b55e;border-radius:12px;background:#fff9e9}
+.sync-cloud-explanation article>span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#8d0d14;color:#fff;border:2px solid #f2b51d;font-weight:900;margin-bottom:7px}
+.sync-cloud-explanation p{font-size:12px;margin:4px 0;color:#555}
+.detected-folders{display:grid;gap:7px;margin:12px 0;padding:12px;border-radius:12px;background:#f4f4f4}
+.detected-folder{display:grid!important;grid-template-columns:180px 1fr auto;gap:8px;align-items:center;width:100%!important;text-align:left!important;background:#fff!important;color:#222!important;border:1px solid #d4bd82!important}
+.detected-folder code{word-break:break-all}.detected-folder b{font-size:10px;color:#17643b}
+.detected-folder:disabled b{color:#a10d15}.detected-folder:disabled{opacity:.6}
+.sync-path-box{padding:12px;border:2px dashed #b10f18;border-radius:10px;background:#fff8e8}.sync-path-box code{word-break:break-all;font-size:14px}
+@media(max-width:850px){.sync-cloud-explanation{grid-template-columns:1fr 1fr}.detected-folder{grid-template-columns:1fr}}
+@media(max-width:520px){.sync-cloud-explanation{grid-template-columns:1fr}}
+
+/* GUACAS V3.3.1 — nuvem em 1 clique */
+.easy-cloud-hero{display:flex;justify-content:space-between;gap:16px;align-items:center;background:linear-gradient(135deg,#fff,#eef9f3)}
+.easy-cloud-steps{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.easy-cloud-steps article{display:grid;grid-template-columns:38px 1fr;gap:9px;align-items:start;padding:12px;border:2px solid #d7b55e;border-radius:12px;background:#fff9e9}
+.easy-cloud-steps article>span{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#8d0d14;color:#fff;border:2px solid #f2b51d;font-weight:900}
+.easy-cloud-steps code{display:inline-block;margin:5px 0;padding:5px 7px;background:#fff;border:1px solid #ccc;border-radius:6px;word-break:break-all}
+.easy-cloud-steps p{font-size:12px;margin:3px 0;color:#555}
+@media(max-width:700px){.easy-cloud-hero{display:grid}.easy-cloud-steps{grid-template-columns:1fr}}
+
+/* GUACAS V3.4 — internet temporária de homologação */
+.internet-test-hero{display:flex;justify-content:space-between;align-items:center;gap:16px;background:linear-gradient(135deg,#fff,#eef7ff)}
+.alert.warning{background:#fff4d6;border:2px solid #e2a900;color:#624800;padding:13px;border-radius:10px}
+.copy-link{width:auto!important;white-space:nowrap}
+.deployment-links>div{grid-template-columns:210px 1fr auto}
+@media(max-width:720px){.internet-test-hero{display:grid}.deployment-links>div{grid-template-columns:1fr}}
+
+/* GUACAS V4.0 — Produção */
+.production-hero{display:flex;justify-content:space-between;gap:18px;align-items:center}
+.production-hero.production-on{background:linear-gradient(135deg,#effaf3,#fff)}
+.production-hero.production-off{background:linear-gradient(135deg,#fff8e6,#fff)}
+.production-badge{padding:12px 15px;border:2px solid #d7b55e;border-radius:999px;font-weight:900;white-space:nowrap}
+.health-item small{display:block;margin-top:4px;font-size:10px;color:#666}
+@media(max-width:700px){.production-hero{display:grid}}
+
+/* GUACAS V4.1 — Modo Web */
+.apps-page>p{max-width:680px;margin-left:auto;margin-right:auto}

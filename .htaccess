@@ -1,0 +1,14 @@
+Options -Indexes
+<FilesMatch "(^\.|\.(?:sqlite|sqlite3|db|db3)(?:-(?:wal|shm|journal))?$|\.(?:log|ini|env|key|guacasenc|sha256|bak|old|tmp)$)">
+  Require all denied
+</FilesMatch>
+<Files "config.php">
+  Require all denied
+</Files>
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "same-origin"
+  Header always set Permissions-Policy "geolocation=(self), camera=(self), microphone=()"
+  Header always set X-Permitted-Cross-Domain-Policies "none"
+</IfModule>

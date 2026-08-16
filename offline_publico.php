@@ -1,0 +1,3 @@
+<?php
+require __DIR__ . '/config.php';
+?><!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#b10f18"><title>Sem internet - GUACAS Público</title><link rel="stylesheet" href="assets/app.css"></head><body class="center"><main class="card auth"><img src="assets/icons/guacas-publico-192.png" class="app-home-icon"><h1>🔴 Sem conexão</h1><p>A solicitação pública precisa de internet para chegar à Central.</p><div class="notice">Utilize também telefone, rádio, canais públicos de emergência ou os meios locais disponíveis.</div><button onclick="location.reload()">Tentar novamente</button></main></body></html>
