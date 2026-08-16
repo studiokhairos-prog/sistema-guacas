@@ -1,0 +1,150 @@
+name: Publicar GUACAS na hospedagem
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: guacas-producao
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Validar e publicar site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código do GitHub
+        uses: actions/checkout@v4
+
+      - name: Conferir pacote antes da publicação
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f index.php
+          test -f config.php
+          test -f portal.php
+          test -f setup.php
+          test -f .htaccess
+          test -f data/.htaccess
+
+          forbidden="$(find . -type f \( \
+            -iname '*.sqlite' -o -iname '*.sqlite3' -o -iname '*.db' -o -iname '*.db3' -o \
+            -iname '*.sqlite-wal' -o -iname '*.sqlite-shm' -o -iname '*.sqlite-journal' -o \
+            -iname '*.key' -o -iname '*.guacasenc' -o -iname '*.log' \
+          \) -print)"
+          if [ -n "$forbidden" ]; then
+            echo 'ERRO: o repositório contém banco, chave, backup ou log proibido:'
+            printf '%s\n' "$forbidden"
+            exit 1
+          fi
+
+          unexpected_data="$(find data -type f \
+            ! -name '.htaccess' \
+            ! -name '.gitkeep' \
+            -print)"
+          if [ -n "$unexpected_data" ]; then
+            echo 'ERRO: a pasta data contém arquivo que não pode ser publicado:'
+            printf '%s\n' "$unexpected_data"
+            exit 1
+          fi
+
+      - name: Preparar proteção do primeiro acesso
+        shell: bash
+        env:
+          GUACAS_SETUP_CODE: ${{ secrets.GUACAS_SETUP_CODE }}
+        run: |
+          set -euo pipefail
+          : "${GUACAS_SETUP_CODE:?Cadastre o secret GUACAS_SETUP_CODE com pelo menos 12 caracteres}"
+          if [ "${#GUACAS_SETUP_CODE}" -lt 12 ]; then
+            echo 'ERRO: GUACAS_SETUP_CODE precisa ter pelo menos 12 caracteres.'
+            exit 1
+          fi
+          php -r '$code=getenv("GUACAS_SETUP_CODE"); file_put_contents("data/setup_code.hash", password_hash($code, PASSWORD_DEFAULT));'
+
+      - name: Instalar cliente de FTP
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y lftp
+
+      - name: Publicar por FTP/FTPS
+        shell: bash
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_REMOTE_DIR: ${{ secrets.FTP_REMOTE_DIR }}
+        run: |
+          set -euo pipefail
+          : "${FTP_HOST:?Cadastre o secret FTP_HOST}"
+          : "${FTP_USERNAME:?Cadastre o secret FTP_USERNAME}"
+          : "${FTP_PASSWORD:?Cadastre o secret FTP_PASSWORD}"
+          : "${FTP_REMOTE_DIR:?Cadastre o secret FTP_REMOTE_DIR}"
+
+          FTP_URL="$(
+            python3 - <<'PY'
+          import os
+          from urllib.parse import quote
+
+          host = os.environ['FTP_HOST'].strip()
+          host = host.removeprefix('ftp://').removeprefix('ftps://').rstrip('/')
+          username = quote(os.environ['FTP_USERNAME'], safe='')
+          password = quote(os.environ['FTP_PASSWORD'], safe='')
+          remote_dir = os.environ['FTP_REMOTE_DIR'].strip()
+          if not remote_dir.startswith('/'):
+              remote_dir = '/' + remote_dir
+          remote_dir = quote(remote_dir.rstrip('/') + '/', safe='/')
+          print(f'ftp://{username}:{password}@{host}{remote_dir}')
+          PY
+          )"
+
+          lftp "$FTP_URL" <<'LFTP'
+          set cmd:fail-exit yes
+          set net:max-retries 3
+          set net:timeout 25
+          set net:reconnect-interval-base 5
+          set ftp:passive-mode true
+          set ftp:ssl-allow true
+          set ftp:ssl-force false
+          set ssl:verify-certificate true
+          mirror -R --verbose --parallel=1 --ignore-time --overwrite --no-perms \
+            --exclude-glob .git/ \
+            --exclude-glob .github/ \
+            --exclude-glob .gitignore \
+            --exclude-glob README_GITHUB.md \
+            --exclude-glob SECURITY.md \
+            --exclude-glob '*.zip' \
+            --exclude-glob '*.bat' \
+            --exclude-glob '*.ps1' \
+            --exclude-glob '*.txt' \
+            --exclude-glob '*.log' \
+            --exclude-glob cloudflared.exe \
+            --exclude-glob 'data/*.sqlite' \
+            --exclude-glob 'data/*.sqlite3' \
+            --exclude-glob 'data/*.db' \
+            --exclude-glob 'data/*.db3' \
+            --exclude-glob 'data/*.sqlite-*' \
+            --exclude-glob 'data/*.sqlite3-*' \
+            --exclude-glob 'data/*.db-*' \
+            --exclude-glob 'data/*.db3-*' \
+            --exclude-glob 'data/app_secret.key' \
+            --exclude-glob 'data/cloud_backup.key' \
+            --exclude-glob 'data/restore_pending.*' \
+            --exclude-glob 'data/backups/**' \
+            --exclude-glob 'data/cloud_sync/**' \
+            --exclude-glob 'data/signatures/**' \
+            --exclude-glob 'data/user_photos/**' \
+            --exclude-glob 'data/user_signatures/**' \
+            --exclude-glob 'data/public_tunnel_url.txt' \
+            --exclude-glob 'data/TUNEL_*' \
+            ./ .
+          bye
+          LFTP
+
+      - name: Publicação concluída
+        run: echo 'GUACAS publicada. Abra o portal HTTPS e conclua o primeiro acesso com o código de implantação.'
