@@ -115,6 +115,7 @@ jobs:
             set cmd:fail-exit yes
             cd "$FTP_REMOTE_DIR"
             set cmd:fail-exit no
+            rm data/setup_code.hash
             rm assets/logo_oficial_bombeiros.jpeg
             rm assets/icons/guacas-bombeiros-180.png
             rm assets/icons/guacas-bombeiros-192.png
