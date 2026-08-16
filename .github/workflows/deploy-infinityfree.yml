@@ -101,7 +101,7 @@ jobs:
 
           upload_once() {
             lftp "$FTP_URL" <<LFTP
-            set cmd:fail-exit yes
+            set cmd:fail-exit no
             set net:max-retries 3
             set net:timeout 25
             set net:reconnect-interval-base 5
@@ -110,6 +110,7 @@ jobs:
             set ftp:ssl-force false
             set ssl:verify-certificate true
             mkdir -p "$FTP_REMOTE_DIR"
+            set cmd:fail-exit yes
             cd "$FTP_REMOTE_DIR"
             mirror -R --verbose --parallel=1 --ignore-time --overwrite --no-perms \
             --exclude-glob .git/ \
