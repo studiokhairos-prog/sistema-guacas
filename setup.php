@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Preencha os dados obrigatórios. CPF e data de nascimento válidos são necessários para recuperação futura da senha.';
     } else {
         try {
-            $pdo->exec('BEGIN IMMEDIATE');
+            $pdo->beginTransaction();
             if ((int)$pdo->query("SELECT COUNT(*) FROM users")->fetchColumn() > 0) {
                 throw new RuntimeException('A configuração inicial já foi concluída.');
             }
