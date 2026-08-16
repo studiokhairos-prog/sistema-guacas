@@ -116,15 +116,6 @@ jobs:
             cd "$FTP_REMOTE_DIR"
             set cmd:fail-exit no
             rm data/setup_code.hash
-            rm assets/logo_oficial_bombeiros.jpeg
-            rm assets/icons/guacas-bombeiros-180.png
-            rm assets/icons/guacas-bombeiros-192.png
-            rm assets/icons/guacas-bombeiros-512.png
-            rm assets/icons/guacas-bombeiros-maskable-512.png
-            rm assets/icons/guacas-publico-180.png
-            rm assets/icons/guacas-publico-192.png
-            rm assets/icons/guacas-publico-512.png
-            rm assets/icons/guacas-publico-maskable-512.png
             set cmd:fail-exit yes
             mirror -R --verbose --parallel=1 --ignore-time --overwrite --no-perms \
             --exclude-glob .git/ \
@@ -137,6 +128,8 @@ jobs:
             --exclude-glob '*.ps1' \
             --exclude-glob '*.txt' \
             --exclude-glob '*.log' \
+            --exclude-glob 'assets/logo_oficial_bombeiros.jpeg' \
+            --exclude-glob 'assets/icons/*.png' \
             --exclude-glob cloudflared.exe \
             --exclude-glob 'data/*.sqlite' \
             --exclude-glob 'data/*.sqlite3' \
