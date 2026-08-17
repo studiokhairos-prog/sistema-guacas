@@ -116,42 +116,13 @@ jobs:
             set cmd:fail-exit yes
             cd "$FTP_REMOTE_DIR"
             set cmd:fail-exit no
-            rm data/setup_code.hash
+            rm data/setup_code.hash            
             set cmd:fail-exit yes
-            mirror -R --verbose --parallel=1 --ignore-time --overwrite --no-perms \
-            --exclude-glob .git/ \
-            --exclude-glob .github/ \
-            --exclude-glob .gitignore \
-            --exclude-glob README_GITHUB.md \
-            --exclude-glob SECURITY.md \
-            --exclude-glob '*.zip' \
-            --exclude-glob '*.bat' \
-            --exclude-glob '*.ps1' \
-            --exclude-glob '*.txt' \
-            --exclude-glob '*.log' \                     
-            --exclude-glob cloudflared.exe \
-            --exclude-glob 'data/*.sqlite' \
-            --exclude-glob 'data/*.sqlite3' \
-            --exclude-glob 'data/*.db' \
-            --exclude-glob 'data/*.db3' \
-            --exclude-glob 'data/*.sqlite-*' \
-            --exclude-glob 'data/*.sqlite3-*' \
-            --exclude-glob 'data/*.db-*' \
-            --exclude-glob 'data/*.db3-*' \
-            --exclude-glob 'data/app_secret.key' \
-            --exclude-glob 'data/cloud_backup.key' \
-            --exclude-glob 'data/restore_pending.*' \
-            --exclude-glob 'data/backups/**' \
-            --exclude-glob 'data/cloud_sync/**' \
-            --exclude-glob 'data/signatures/**' \
-            --exclude-glob 'data/user_photos/**' \
-            --exclude-glob 'data/user_signatures/**' \
-            --exclude-glob 'data/public_tunnel_url.txt' \
-            --exclude-glob 'data/TUNEL_*' \
-              ./ .
+            lcd "$GITHUB_WORKSPACE"
+            mirror -R --verbose --parallel=1 --ignore-time --overwrite --no-perms --exclude-glob .git/ --exclude-glob .github/ --exclude-glob .gitignore --exclude-glob README_GITHUB.md --exclude-glob SECURITY.md --exclude-glob '*.zip' --exclude-glob '*.bat' --exclude-glob '*.ps1' --exclude-glob '*.txt' --exclude-glob '*.log' --exclude-glob cloudflared.exe --exclude-glob 'data/*.sqlite' --exclude-glob 'data/*.sqlite3' --exclude-glob 'data/*.db' --exclude-glob 'data/*.db3' --exclude-glob 'data/*.sqlite-*' --exclude-glob 'data/*.sqlite3-*' --exclude-glob 'data/*.db-*' --exclude-glob 'data/*.db3-*' --exclude-glob 'data/app_secret.key' --exclude-glob 'data/cloud_backup.key' --exclude-glob 'data/restore_pending.*' --exclude-glob 'data/backups/**' --exclude-glob 'data/cloud_sync/**' --exclude-glob 'data/signatures/**' --exclude-glob 'data/user_photos/**' --exclude-glob 'data/user_signatures/**' --exclude-glob 'data/public_tunnel_url.txt' --exclude-glob 'data/TUNEL_*' ./ .
             bye
           LFTP
-          }
+          }           
 
           upload_ok=0
           for attempt in 1 2 3; do
