@@ -128,8 +128,7 @@ jobs:
             --exclude-glob '*.bat' \
             --exclude-glob '*.ps1' \
             --exclude-glob '*.txt' \
-            --exclude-glob '*.log' \
-            --exclude-glob 'assets/logo_oficial_bombeiros.jpeg' \            
+            --exclude-glob '*.log' \                     
             --exclude-glob cloudflared.exe \
             --exclude-glob 'data/*.sqlite' \
             --exclude-glob 'data/*.sqlite3' \
